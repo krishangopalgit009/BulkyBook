@@ -46,7 +46,7 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
             RoleManager<IdentityRole> roleManager,
             IUnitOfWork unitOfWork
             )
-            
+
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -131,14 +131,6 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            
-            if (!_roleManager.RoleExistsAsync(StaticDetail.Role_Admin).GetAwaiter().GetResult())
-            {
-                _roleManager.CreateAsync(new IdentityRole(StaticDetail.Role_Admin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(StaticDetail.Role_User_Indi)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(StaticDetail.Role_Employee)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(StaticDetail.Role_User_Comp)).GetAwaiter().GetResult();
-            }
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -147,12 +139,12 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
                 RoleList = _roleManager.Roles.Select(r => r.Name).Select(i => new SelectListItem
                 {
                     Text = i,
-                    Value =i
+                    Value = i
                 }),
-                CompanyList = _unitOfWork.CompanyRepo.GetAll().Select(c=> new SelectListItem
+                CompanyList = _unitOfWork.CompanyRepo.GetAll().Select(c => new SelectListItem
                 {
                     Text = c.Name,
-                    Value= c.Id.ToString()
+                    Value = c.Id.ToString()
                 })
             };
         }
@@ -188,8 +180,9 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
 
                     if (Input.Role == null)
                     {
-                        await _userManager.AddToRoleAsync(user, StaticDetail.Role_User_Indi);    
-                    }else
+                        await _userManager.AddToRoleAsync(user, StaticDetail.Role_User_Indi);
+                    }
+                    else
                     {
                         await _userManager.AddToRoleAsync(user, Input.Role);
                     }
@@ -212,7 +205,15 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (User.IsInRole(StaticDetail.Role_Admin))
+                        {
+                            TempData["success"] = "New User Created Successfully";
+                            return Page();
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                        }
                         return LocalRedirect(returnUrl);
                     }
                 }

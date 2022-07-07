@@ -264,6 +264,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
             List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCartRepo.GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
 
+             HttpContext.Session.Clear();
             _unitOfWork.ShoppingCartRepo.RemoveRange(shoppingCarts);
             _unitOfWork.Save();
 
