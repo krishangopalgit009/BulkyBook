@@ -28,8 +28,8 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity;
-            Claim claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
             _shoppingCartVM = new ShoppingCartVM()
             {

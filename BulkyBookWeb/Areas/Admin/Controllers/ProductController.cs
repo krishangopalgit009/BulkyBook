@@ -70,7 +70,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
 
-                if (file!=null)
+                if (file != null)
                 {
                     string fileName = Guid.NewGuid().ToString();
                     var uploads = Path.Combine(wwwRootPath, @"images\products");
@@ -78,7 +78,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 
                     if (productVM.Product.ImageUrl != null)
                     {
-                        var oldImagePath = Path.Combine(wwwRootPath,productVM.Product.ImageUrl.TrimStart('\\'));
+                        var oldImagePath = Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
                         if (System.IO.File.Exists(oldImagePath))
                         {
                             System.IO.File.Delete(oldImagePath);
@@ -92,7 +92,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                     productVM.Product.ImageUrl = @"\images\products\" + fileName + extension;
                 }
 
-                if (productVM.Product.Id==0)
+                if (productVM.Product.Id == 0)
                 {
                     _unitOfWork.ProductRepo.Add(productVM.Product);
                 }
@@ -100,7 +100,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                 {
                     _unitOfWork.ProductRepo.Update(productVM.Product);
                 }
-                
+
                 _unitOfWork.Save();  
                 
                 if (productVM.Product.Id == 0)
@@ -121,7 +121,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAllProducts()
         {
-            var productList = _unitOfWork.ProductRepo.GetAll(includeProperties:"Category,CoverType");
+            var productList = _unitOfWork.ProductRepo.GetAll(includeProperties: "Category,CoverType");
             return Json(new { data = productList });
         }
 

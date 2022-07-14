@@ -8,3 +8,6 @@ dotnet_diagnostic.CA1305.severity = silent
 
 # CS8602: Dereference of a possibly null reference.
 dotnet_diagnostic.CS8602.severity = none
+
+# IDE0008: Use explicit type
+csharp_style_var_elsewhere = true

@@ -24,6 +24,7 @@ namespace BulkyBook.DataAccess.Repository
         public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+
             if (filter != null)
             { 
                 query = query.Where(filter);
@@ -53,6 +54,7 @@ namespace BulkyBook.DataAccess.Repository
             }
 
             query = query.Where(filter);
+
             if (includeProperties != null)
             {
                 foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))

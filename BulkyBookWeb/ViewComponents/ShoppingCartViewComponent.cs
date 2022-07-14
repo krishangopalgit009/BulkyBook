@@ -16,7 +16,7 @@ namespace BulkyBookWeb.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var claimIdentity = User.Identity as ClaimsIdentity;
             var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
             if (claim != null)

@@ -51,6 +51,8 @@ namespace BulkyBook.Models
         [ValidateNever]
         public CoverType CoverType  { get; set; }
 
+        [NotMapped]
+        public string? EncryptedId { get; set; }
 
 
     }
